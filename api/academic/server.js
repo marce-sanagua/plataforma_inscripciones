@@ -11,11 +11,11 @@ const inscripciones = [
   { userId: 1, materia: "BD" }
 ];
 
-app.get("/ms-inscripcion/usuario/:id", async (req, res) => {
+app.get("/academic/usuario/:id", async (req, res) => {
   const userId = req.params.id;
 
   const user = await axios.get(
-    `http://localhost:3000/ms-usuario/alumno/${userId}`
+    `http://localhost:3000/academic/alumno/${userId}`
   );
 
   const materias = inscripciones.filter(i => i.userId == userId);
@@ -26,4 +26,4 @@ app.get("/ms-inscripcion/usuario/:id", async (req, res) => {
   });
 });
 
-app.listen(4000, () => console.log("ms-inscripcion en 4000"));
+app.listen(4000, () => console.log("academic - feature inscripciones en 4000"));
