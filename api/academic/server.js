@@ -15,7 +15,7 @@ app.get("/academic/usuario/:id", async (req, res) => {
   const userId = req.params.id;
 
   const user = await axios.get(
-    `http://localhost:3000/academic/alumno/${userId}`
+    `http://localhost:3000/users/alumno/${userId}`
   );
 
   const materias = inscripciones.filter(i => i.userId == userId);
