@@ -13,17 +13,13 @@ const inscripciones = [
 
 app.get("/academic/usuario/:id", async (req, res) => {
   const userId = req.params.id;
-
-  const user = await axios.get(
-    `http://localhost:3000/academic/alumno/${userId}`
-  );
-
-  const materias = inscripciones.filter(i => i.userId == userId);
-
-  res.json({
-    usuario: user.data,
-    materias
-  });
+  try {
+    const user = await axios.get("http://localhost:3000/ms-usuario/alumno/" + userId);
+    const materias = inscripciones.filter(i => i.userId == userId);
+    res.json({ usuario: user.data, materias });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
-app.listen(4000, () => console.log("academic - feature inscripciones en 4000"));
+app.listen(4000, () => console.log("academic corriendo en 4000"));
