@@ -2,29 +2,14 @@ const express = require("express");
 const cors = require("cors");
 
 const app = express();
+
 app.use(cors());
 app.use(express.json());
 
-const alumnos = [
-  { id: 1, nombre: "Juan" },
-  { id: 2, nombre: "Ana" }
-];
+// ROUTES
+const authRoutes = require("./src/routes/auth.routes");
+app.use("/", authRoutes);
 
-// ✔ USERS
-app.get("/users/alumno/:id", (req, res) => {
-  const alumno = alumnos.find(a => a.id == req.params.id);
-
-  if (!alumno) {
-    return res.status(404).json({
-      error: "Usuario no encontrado"
-    });
-  }
-
-  res.json(alumno);
-});
-
-const PORT = process.env.PORT || 3000;
-
-app.listen(PORT, () => {
-  console.log("users corriendo en puerto", PORT);
+app.listen(3000, () => {
+  console.log("Users service en puerto 3000");
 });
