@@ -18,8 +18,8 @@ app.get("/academic/usuario/:id", async (req, res) => {
 
   try {
     const userResponse = await axios.get(
-      /*`https://users-api-rmm5.onrender.com/usuarios/${userId}`*/
-      `http://localhost:3000/usuarios/${userId}`
+      `https://users-api-rmm5.onrender.com/usuarios/${userId}`
+      
     );
 
     const materias = getInscripciones().filter(i => i.userId == userId);
