@@ -1,26 +1,28 @@
 const express = require("express");
 const cors = require("cors");
 const axios = require("axios");
+const fs = require("fs");
+const path = require("path");
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-const inscripciones = [
-  { userId: 1, materia: "Algoritmos" },
-  { userId: 1, materia: "BD" }
-];
+const getInscripciones = () => {
+  const filePath = path.join(__dirname, "src/data/inscripciones.json");
+  return JSON.parse(fs.readFileSync(filePath, "utf-8"));
+};
 
-// ✔ ACADEMIC
 app.get("/academic/usuario/:id", async (req, res) => {
   const userId = req.params.id;
 
   try {
     const userResponse = await axios.get(
-      `https://users-api-rmm5.onrender.com/users/alumno/${userId}`
+      /*`https://users-api-rmm5.onrender.com/usuarios/${userId}`*/
+      `http://localhost:3000/usuarios/${userId}`
     );
 
-    const materias = inscripciones.filter(i => i.userId == userId);
+    const materias = getInscripciones().filter(i => i.userId == userId);
 
     return res.json({
       usuario: userResponse.data,
@@ -28,7 +30,6 @@ app.get("/academic/usuario/:id", async (req, res) => {
     });
 
   } catch (error) {
-    // ✔ usuario no existe (404 de users)
     if (error.response && error.response.status === 404) {
       return res.status(404).json({
         error: "Usuario no encontrado"

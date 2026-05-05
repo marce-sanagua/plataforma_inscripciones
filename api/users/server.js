@@ -1,28 +1,32 @@
 const express = require("express");
 const cors = require("cors");
+const fs = require("fs");
+const path = require("path");
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-const alumnos = [
-  { id: 1, nombre: "Juan" },
-  { id: 2, nombre: "Ana" }
-];
+const getUsuarios = () => {
+  const filePath = path.join(__dirname, "src/data/usuarios.json");
+  return JSON.parse(fs.readFileSync(filePath, "utf-8"));
+};
 
-// ✔ USERS
-app.get("/users/alumno/:id", (req, res) => {
-  const alumno = alumnos.find(a => a.id == req.params.id);
 
-  if (!alumno) {
-    return res.status(404).json({
-      error: "Usuario no encontrado"
-    });
-  }
-
-  res.json(alumno);
+app.get("/usuarios", (req, res) => {
+  res.status(200).json(getUsuarios());
 });
 
+
+app.get("/usuarios/:id", (req, res) => {
+  const usuario = getUsuarios().find(u => u.id == req.params.id);
+
+  if (!usuario) {
+    return res.status(404).json({ error: "Usuario no encontrado" });
+  }
+
+  res.status(200).json(usuario);
+});
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
