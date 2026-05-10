@@ -8,7 +8,8 @@ app.use(cors({
   origin: ['http://localhost:3000', 'https://plataforma-inscripciones-frontend.vercel.app']
 }));
 app.use(express.json());
-
+const authRoutes = require("./src/routes/auth.routes");
+app.use("/auth", authRoutes);
 const getUsuarios = () => {
   const filePath = path.join(__dirname, "src/data/usuarios.json");
   return JSON.parse(fs.readFileSync(filePath, "utf-8"));
