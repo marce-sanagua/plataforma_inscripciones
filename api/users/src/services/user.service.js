@@ -1,34 +1,28 @@
-const db = require("../config/db");
+const fs = require("fs");
+const path = require("path");
 
-async function login(email, password) {
-  const [rows] = await db.query(
-    "SELECT * FROM usuarios WHERE email = ? AND password = ?",
-    [email, password]
-  );
+const filePath = path.join(__dirname, "../data/usuarios.json");
 
-  return rows[0];
+function getUsuarios() {
+  return JSON.parse(fs.readFileSync(filePath, "utf-8"));
 }
 
-async function register(nombre, email, password, rol) {
-  const result = await db.query(
-    "INSERT INTO usuarios (nombre, email, password, rol) VALUES (?, ?, ?, ?)",
-    [nombre, email, password, rol]
-  );
-
-  return result;
+function login(email, password) {
+  const usuarios = getUsuarios();
+  return usuarios.find(u => u.email === email && u.password === password) || null;
 }
 
-async function getById(id) {
-  const [rows] = await db.query(
-    "SELECT id, nombre FROM usuarios WHERE id = ?",
-    [id]
-  );
-
-  return rows[0];
+function register(nombre, email, password, rol) {
+  const usuarios = getUsuarios();
+  const nuevo = { id: usuarios.length + 1, nombre, email, password, rol };
+  usuarios.push(nuevo);
+  fs.writeFileSync(filePath, JSON.stringify(usuarios, null, 2));
+  return nuevo;
 }
 
-module.exports = {
-  login,
-  register,
-  getById
-};
+function getById(id) {
+  const usuarios = getUsuarios();
+  return usuarios.find(u => u.id == id) || null;
+}
+
+module.exports = { login, register, getById };
