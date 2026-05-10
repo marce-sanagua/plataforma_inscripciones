@@ -3,7 +3,7 @@ const axios = require("axios");
 
 const router = express.Router();
 
-// 🔹 ESTE ES TU BLOQUE (AQUÍ VA)
+
 const inscripciones = [
   { userId: 1, materia: "Algoritmos" },
   { userId: 1, materia: "BD" }

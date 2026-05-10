@@ -1,6 +1,6 @@
 const service = require("../services/inscripcion.service");
 
-// 🟦 CREAR INSCRIPCIÓN
+
 async function createInscripcion(req, res) {
   const { user_id, materia_id } = req.body;
 
@@ -15,14 +15,13 @@ async function createInscripcion(req, res) {
 }
 
 
-// 🟦 OBTENER MATERIAS DE UN USUARIO
 async function getByUser(req, res) {
   try {
     const { id } = req.params;
 
     const data = await service.getByUser(id);
 
-    // 🟢 si no tiene materias
+    
     if (data.length === 0) {
       return res.json({
         message: "No estás inscripto en ninguna materia",
@@ -30,7 +29,7 @@ async function getByUser(req, res) {
       });
     }
 
-    // 🟢 si tiene materias
+  
     res.json({
       materias: data
     });
